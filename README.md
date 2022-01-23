@@ -1,2 +1,2 @@
-# skeleton-project
-This is an evdobe skeleton project setup
+# event-dispatcher
+Dispatches Domain Events 
