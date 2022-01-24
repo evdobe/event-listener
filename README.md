@@ -40,7 +40,7 @@ Here go the specifications of conteinerized environments for your project:
 
 On a bash terminal run:
 
-```bin/up dev```
+```bin/env dev up```
 
 A docker hello-world based container image will be built, tagged as ```evdobe-skeleton_hello-world:latest``` and executed with service name ```hello-world```
  
