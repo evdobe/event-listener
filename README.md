@@ -29,12 +29,12 @@ COMMAND may be one of:
 
 The place where development happens. Put here your project's source code.
 
-### ops
+### ops/envs
 
 Here go the specifications of conteinerized environments for your project:
 
-- ops/cont: Container building stuff like Dockerfiles, configuration and filesystem targets.
-- ops/comp: Docker Compose runtime stuff like docker-compose.yaml, environment variables file (.env) and container mounts.
+- ops/envs/{ENVIRONMENT}/cont: Container building stuff like Dockerfiles, configuration and filesystem targets.
+- ops/envs/{ENVIRONMENT}/comp: Docker Compose runtime stuff like docker-compose.yaml, environment variables file (.env) and container mounts.
 
 ## Hello World 
 
