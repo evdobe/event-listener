@@ -1,4 +1,17 @@
 services:
-  hello-world:
-    container_name: hello-world
-    build: ../cont/hello-world
+  event-listener:
+    container_name: event-listener
+    build: ../cont/event-listener
+    environment:
+      HOST_GID: ${HOST_UID}
+      HOST_UID: ${HOST_UID}
+      TZ: Europe/Athens
+      AUTORELOAD_PROGRAMS: "swoole"
+      AUTORELOAD_ANY_FILES: 1
+    expose: 
+    - 9501
+    ports: 
+    - 9501:9501
+    volumes:
+    - ../../../../dev:/var/www
+      
