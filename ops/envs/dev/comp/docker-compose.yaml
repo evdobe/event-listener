@@ -5,13 +5,14 @@ services:
     environment:
       HOST_GID: ${HOST_UID}
       HOST_UID: ${HOST_UID}
-      TZ: Europe/Athens
+      HTTP_PORT: ${HTTP_PORT}
+      TZ: ${TIME_ZONE}
       AUTORELOAD_PROGRAMS: "swoole"
       AUTORELOAD_ANY_FILES: 1
     expose: 
-    - 9501
+    - ${HTTP_PORT}
     ports: 
-    - 9501:9501
+    - ${HTTP_PORT}:${HTTP_PORT}
     volumes:
     - ../../../../dev:/var/www
       

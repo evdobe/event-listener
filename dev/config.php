@@ -3,5 +3,5 @@
 return [
     \Infrastructure\Http\Server::class => DI\get(\Infrastructure\Http\Adapter\Swoole\Server::class),
     \Infrastructure\Http\Adapter\Swoole\Server::class =>  DI\autowire()
-        ->constructorParameter('port', 9501) 
+        ->constructorParameter('port', intval(getenv('HTTP_PORT'))) 
 ];
