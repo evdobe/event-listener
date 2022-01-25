@@ -9,7 +9,9 @@
     ],
     "require": {
         "php-di/php-di": "^6.3",
-        "doctrine/annotations": "^1.13"
+        "doctrine/annotations": "^1.13",
+        "enqueue/enqueue": "^0.10.15",
+        "enqueue/rdkafka": "^0.10.15"
     },
     "autoload": {
         "psr-4": {
