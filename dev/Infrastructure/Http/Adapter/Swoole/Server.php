@@ -8,17 +8,19 @@ use Swoole\Http\Request as SwooleRequest;
 use Swoole\Http\Response as SwooleResponse;
 use Swoole\Http\Server as SwooleServer;
 
+use Application\Execution\Process;
+
 class Server implements HttpServer
 {
-    protected SwooleServer $server;
+    protected SwooleServer $delegate;
 
     public function __construct(protected int $port){
-        $this->server = new SwooleServer(host: '0.0.0.0', port: $port);
+        $this->delegate = new SwooleServer(host: '0.0.0.0', port: $port);
     }
 
     public function start(): void
     {
-        $this->server->start();
+        $this->delegate->start();
     }
 
     public function on(string $eventName, callable $callback): void
@@ -32,6 +34,10 @@ class Server implements HttpServer
             },
             default => $callback
         };
-        $this->server->on(event_name: $eventName, callback: $swooleCallbak);
+        $this->delegate->on(event_name: $eventName, callback: $swooleCallbak);
+    }
+
+    public function addProcess(Process $process): bool{
+        return (boolean)$this->delegate->addProcess($process->getDelegate());
     }
 }
