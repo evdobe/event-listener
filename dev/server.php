@@ -7,7 +7,7 @@ use Infrastructure\Http\Request;
 use Infrastructure\Http\Response;
 
 $builder = new DI\ContainerBuilder();
-$builder->addDefinitions('config.php');
+$builder->addDefinitions('config/di.php');
 $container = $builder->build();
 
 $server = $container->get(Server::class);
