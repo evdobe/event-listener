@@ -2,8 +2,8 @@
 
 namespace Application\Http;
 
-use Infrastructure\Http\Request;
-use Infrastructure\Http\Response;
+use Application\Http\Request;
+use Application\Http\Response;
 
 interface Handler
 {

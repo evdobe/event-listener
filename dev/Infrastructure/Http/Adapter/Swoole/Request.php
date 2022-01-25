@@ -2,7 +2,7 @@
 
 namespace Infrastructure\Http\Adapter\Swoole;
 
-use Infrastructure\Http\Request as HttpRequest;
+use Application\Http\Request as HttpRequest;
 
 use Swoole\Http\Request as SwooleHttpRequest; 
 

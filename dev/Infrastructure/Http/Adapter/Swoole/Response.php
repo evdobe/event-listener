@@ -2,7 +2,7 @@
 
 namespace Infrastructure\Http\Adapter\Swoole;
 
-use Infrastructure\Http\Response as HttpResponse;
+use Application\Http\Response as HttpResponse;
 
 use Swoole\Http\Response as SwooleHttpResponse; 
 

@@ -2,10 +2,9 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Infrastructure\Http\Server;
-use Infrastructure\Http\Request;
-use Infrastructure\Http\Response;
-
+use Application\Http\Server;
+use Application\Http\Request;
+use Application\Http\Response;
 use Application\Http\Handler;
 
 $builder = new DI\ContainerBuilder();
@@ -26,9 +25,7 @@ $server->on(
 $server->on(
     "request",
     function (Request $request, Response $response) use ($handler){
-        echo "Handling request.\n";
         $handler->handle($request, $response);
-        //$response->end("Hello, World!\n");
     }
 );
 

@@ -3,8 +3,8 @@
 namespace Application\Http\Impl;
 
 use Application\Http\Handler;
-use Infrastructure\Http\Request;
-use Infrastructure\Http\Response;
+use Application\Http\Request;
+use Application\Http\Response;
 
 class PingHandler implements Handler
 {

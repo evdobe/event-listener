@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Http;
+namespace Application\Http;
 
 interface Response
 {
