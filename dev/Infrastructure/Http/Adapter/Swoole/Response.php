@@ -17,4 +17,9 @@ class Response implements HttpResponse
     {
         $this->delegate->end(content: $content);
     }
+
+    public function header(string $key, string $value): void
+    {
+        $this->delegate->header(key: $key, value: $value);
+    }
 }

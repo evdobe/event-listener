@@ -3,5 +3,6 @@
 return [
     \Infrastructure\Http\Server::class => DI\get(\Infrastructure\Http\Adapter\Swoole\Server::class),
     \Infrastructure\Http\Adapter\Swoole\Server::class =>  DI\autowire()
-        ->constructorParameter('port', intval(getenv('HTTP_PORT'))) 
+        ->constructorParameter('port', intval(getenv('HTTP_PORT'))),
+    \Application\Http\Handler::class => DI\get(\Application\Http\Impl\PingHandler::class)
 ];
