@@ -1,0 +1,35 @@
+<?php declare(strict_types=1);
+
+$connectionConfig = [
+    'global' => [
+        'metadata.broker.list' => getenv('MESSAGE_BROKER_HOST').':'.getenv('MESSAGE_BROKER_PORT'),
+        'group.id' => getenv('MESSAGE_CONSUMER_GROUP'),
+    ],
+    'topic' => [
+        'auto.offset.reset' => 'earliest',
+        'enable.auto.commit' => 'false'
+    ],
+];
+
+$channels = getenv('EVENT_CHANNELS');
+
+$channelsConfig = array_filter(array_map(function(string $row){
+    return trim($row);
+},explode("\n", $channels)));
+
+$channelsConfig = array_reduce($channelsConfig, function(array $carry, string $item){
+    $parts = array_map(function(string $row){
+        return trim($row);
+    },explode(":", $item));
+    
+    $carry[$parts[0]] = [
+        'filter' => count($parts) >1?$parts[1]:null,
+        'translator' => count($parts) >2?$parts[2]:null,
+    ];
+    return $carry;
+},[]);
+
+return [
+    'connection' => $connectionConfig,
+    'channels' => $channelsConfig
+];

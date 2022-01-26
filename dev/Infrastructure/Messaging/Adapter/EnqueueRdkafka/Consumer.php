@@ -31,10 +31,16 @@ class Consumer implements ApplicationConsumer
     {
         while(true){
             echo "Listening on channel ".$this->delegate->getQueue()->getTopicName()."...\n";
-            $message = $this->delegate->receive();
-            if ($message){
-                $this->handler->handle(new Message($message));
-                $this->delegate->acknowledge($message);
+            try {
+                $message = $this->delegate->receive();
+                if ($message){
+                    $this->handler->handle(new Message($message));
+                    $this->delegate->acknowledge($message);
+                }
+            }
+            catch (\LogicException $e){
+                echo "RECEIVE ERROR!!! Channel: ".$this->delegate->getQueue()->getTopicName()." Message: ".$e->getMessage()."\n";
+                sleep(1);
             }
         }
         

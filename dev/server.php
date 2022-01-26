@@ -8,6 +8,7 @@ use Application\Http\Response as HttpResponse;
 use Application\Http\Handler as HttpHandler;
 
 use Application\Messaging\Consumer as MessagingConsumer;
+use Application\Messaging\Handler as MessagingHandler;
 
 use Application\Execution\Process;
 
@@ -18,15 +19,23 @@ $container = $builder->build();
 $httpServer = $container->get(HttpServer::class);
 $httpHandler = $container->get(HttpHandler::class);
 
+$messagingConfig = include('config/messaging.php');
 
-
-$process = $container->make(Process::class, ["callback" => function($process) use ($container){
-    echo "Starting process...\n";
-    $messagingConsumer = $container->get(MessagingConsumer::class);
-    $messagingConsumer->start();
-}]);
-
-$httpServer->addProcess($process);
+foreach ($messagingConfig['channels'] as $channel => $handlerConfig){
+    $process = $container->make(Process::class, ["callback" => function($process) use ($messagingConfig, $container, $channel, $handlerConfig){
+        echo "Starting process...\n";
+        $messagingConsumer = $container->make(MessagingConsumer::class, [
+            'config' => $messagingConfig['connection'],
+            'channel' => $channel, 
+            'handler' => $container->make(MessagingHandler::class, [
+                'filter' => $container->make($handlerConfig['filter']), 
+                'translator' => $container->make($handlerConfig['translator']), 
+            ])
+        ]);
+        $messagingConsumer->start();
+    }]);
+    $httpServer->addProcess($process);
+}
 
 $httpServer->on(
     "start",
