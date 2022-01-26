@@ -27,6 +27,7 @@ foreach ($messagingConfig['channels'] as $channel => $handlerConfig){
         $messagingConsumer = $container->make(MessagingConsumer::class, [
             'config' => $messagingConfig['connection'],
             'channel' => $channel, 
+            'invalidChannel' => $messagingConfig['invalidChannel'],
             'handler' => $container->make(MessagingHandler::class, [
                 'filter' => $container->make($handlerConfig['filter']), 
                 'translator' => $container->make($handlerConfig['translator']), 

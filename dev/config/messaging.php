@@ -31,5 +31,6 @@ $channelsConfig = array_reduce($channelsConfig, function(array $carry, string $i
 
 return [
     'connection' => $connectionConfig,
-    'channels' => $channelsConfig
+    'channels' => $channelsConfig,
+    'invalidChannel' => getenv('INVALID_CHANNEL')?:null
 ];

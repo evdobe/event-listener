@@ -19,12 +19,21 @@ class Consumer implements ApplicationConsumer
 
     protected RdKafkaConsumer $delegate;
 
-    public function __construct(protected array $config, protected string $channel, protected Handler $handler)
+    protected RdKafkaTopic $invalidTopic;
+
+    public function __construct(
+        protected array $config, 
+        protected string $channel, 
+        protected Handler $handler, 
+        protected ?string $invalidChannel = null)
     {
         $this->context = (new RdKafkaConnectionFactory($config))
             ->createContext();
         $this->topic = $this->context->createTopic($channel);
         $this->delegate = $this->context->createConsumer($this->topic);
+        if ($invalidChannel){
+            $this->invalidTopic = $this->context->createTopic($invalidChannel);
+        }
     }
 
     public function start(): void
@@ -38,13 +47,27 @@ class Consumer implements ApplicationConsumer
                     $this->delegate->acknowledge($message);
                 }
             }
-            catch (\LogicException $e){
+            catch (\Exception $e){
                 echo "RECEIVE ERROR!!! Channel: "
                     .$this->delegate->getQueue()->getTopicName()
                     ." Error: ".$e->getMessage()."\n";
                 if (!empty($message)){
-                    echo "REJECTING MESSAGE: ".print_r($message, true);
+                    echo "REJECTING MESSAGE: ".print_r($message, true)."\n";
                     $this->delegate->reject($message);
+                    if (!empty($this->invalidTopic)){
+                        echo "Sending message to invalid channel...";
+                        $invalidProducer = $this->context->createProducer();
+                        $message->setProperty("source", $this->delegate->getQueue()->getTopicName());
+                        $message->setProperty("invalidBy", $this->config['global']['group.id']);
+                        $message->setProperty("invalidAt", (new \DateTime())->format('Y-m-d H:i:s'));
+                        $message->setProperty("exception", [
+                            'class' => get_class($e),
+                            'code' => $e->getCode(),
+                            'message' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString()
+                        ]);
+                        $invalidProducer->send($this->invalidTopic, $message);
+                    }
                 }
             }
         }
