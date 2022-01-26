@@ -21,7 +21,7 @@ class Message implements ApplicationMessage
         return $this->delegate->getHeaders();
     }
 
-    public function getHeader(string $name, mixed $default):mixed{
+    public function getHeader(string $name, mixed $default = null):mixed{
         return $this->delegate->getHeader(name: $name, default: $default);
     }
 
@@ -29,12 +29,51 @@ class Message implements ApplicationMessage
         return $this->delegate->getProperties();
     }
 
-    public function getPropery(string $name, mixed $default):mixed{
+    public function getPropery(string $name, mixed $default = null):mixed{
         return $this->delegate->getProperty(name: $name, default: $default);
     }
 
     public function getKey():?string{
         return $this->delegate->getKey();
+    }
+
+    public function withBody(string $body): ApplicationMessage
+    {
+        $delegate = clone($this->delegate);
+        $delegate->setBody(body: $body);
+        return new Message($delegate);
+    }
+
+    public function withHeader(string $name, mixed $value): ApplicationMessage
+    {
+        $delegate = clone($this->delegate);
+        $delegate->setHeader(name: $name, value: $value);
+        return new Message($delegate);
+    }
+
+    public function withProperty(string $name, mixed $value): ApplicationMessage
+    {
+        $delegate = clone($this->delegate);
+        $delegate->setProperty(name: $name, value: $value);
+        return new Message($delegate);
+    }
+
+    public function withoutHeader(string $name): ApplicationMessage
+    {
+        $delegate = clone($this->delegate);
+        $headers = $delegate->getHeaders();
+        unset($headers[$name]);
+        $delegate->setHeaders($headers);
+        return new Message($delegate);
+    }
+
+    public function withoutProperty(string $name): ApplicationMessage
+    {
+        $delegate = clone($this->delegate);
+        $properties = $delegate->getProperties();
+        unset($properties[$name]);
+        $delegate->setProperties($properties);
+        return new Message($delegate);
     }
 
 }

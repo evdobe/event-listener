@@ -39,8 +39,13 @@ class Consumer implements ApplicationConsumer
                 }
             }
             catch (\LogicException $e){
-                echo "RECEIVE ERROR!!! Channel: ".$this->delegate->getQueue()->getTopicName()." Message: ".$e->getMessage()."\n";
-                sleep(1);
+                echo "RECEIVE ERROR!!! Channel: "
+                    .$this->delegate->getQueue()->getTopicName()
+                    ." Error: ".$e->getMessage()."\n";
+                if (!empty($message)){
+                    echo "REJECTING MESSAGE: ".print_r($message, true);
+                    $this->delegate->reject($message);
+                }
             }
         }
         

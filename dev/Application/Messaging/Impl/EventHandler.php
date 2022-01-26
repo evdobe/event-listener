@@ -16,7 +16,17 @@ class EventHandler implements Handler
 
     public function handle(Message $message): void
     {
-        echo "Handling message...".$message->getBody()."\n";
+        if ($this->filter && !$this->filter->matches($message)){
+            echo "Skipping unmatched message.\n";
+            return;
+        }
+        if ($this->translator){
+            $message = $this->translator->translate($message);
+        }
+        echo "Handling message with body: "
+            .$message->getBody().", headers: "
+            .print_r($message->getHeaders(), true).", properties: "
+            .print_r($message->getProperties(), true)."\n";
     }
 
 }
