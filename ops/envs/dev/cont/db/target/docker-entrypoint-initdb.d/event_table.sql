@@ -33,7 +33,7 @@ CREATE TABLE public.event (
     aggregate_id integer NOT NULL,
     aggregate_version integer NOT NULL,
     data jsonb NOT NULL,
-    "timestamp" timestamp(3) without time zone DEFAULT now() NOT NULL,
+    occured_at timestamp(3) without time zone DEFAULT now() NOT NULL,
     dispatched boolean DEFAULT false NOT NULL,
     dispatched_at timestamp(3) without time zone,
     received_at timestamp(3) without time zone,
