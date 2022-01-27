@@ -21,10 +21,22 @@ $channelsConfig = array_reduce($channelsConfig, function(array $carry, string $i
     $parts = array_map(function(string $row){
         return trim($row);
     },explode(":", $item));
+
+    $classConfig = function(string $configStr){
+        $parts = explode("|", $configStr);
+        $className = trim(array_shift($parts));
+        $argumentArray = array_map(function(string $arg){
+            return trim($arg);
+        },$parts);
+        return $className?[
+            'class' => $className,
+            'arg' => $argumentArray
+        ]:null;
+    };
     
     $carry[$parts[0]] = [
-        'filter' => count($parts) >1?$parts[1]:null,
-        'translator' => count($parts) >2?$parts[2]:null,
+        'filter' => count($parts) >1?$classConfig($parts[1]):null,
+        'translator' => count($parts) >2?$classConfig($parts[2]):null,
     ];
     return $carry;
 },[]);

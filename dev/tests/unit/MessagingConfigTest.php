@@ -24,7 +24,7 @@ final class MessagingConfigTest extends TestCase
 
         $config=include('config/messaging.php');
 
-        $this->assertEquals('\Application\Messaging\Impl\ExampleFilter1', $config['channels']['channel1']['filter']);
+        $this->assertEquals('\Application\Messaging\Impl\ExampleFilter1', $config['channels']['channel1']['filter']['class']);
         $this->assertEmpty($config['channels']['channel2']['filter']);
         $this->assertEmpty($config['channels']['channel3']['filter']);
     }
@@ -38,8 +38,8 @@ final class MessagingConfigTest extends TestCase
 
         $config=include('config/messaging.php');
 
-        $this->assertEquals('\Application\Messaging\Impl\ExampleTranslator1', $config['channels']['channel1']['translator']);
+        $this->assertEquals('\Application\Messaging\Impl\ExampleTranslator1', $config['channels']['channel1']['translator']['class']);
         $this->assertEmpty($config['channels']['channel2']['translator']);
-        $this->assertEquals('\Application\Messaging\Impl\ExampleTranslator2', $config['channels']['channel3']['translator']);
+        $this->assertEquals('\Application\Messaging\Impl\ExampleTranslator2', $config['channels']['channel3']['translator']['class']);
     }
 }
