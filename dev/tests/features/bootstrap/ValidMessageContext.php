@@ -115,5 +115,6 @@ class ValidMessageContext implements Context
         Assert::that($event['name'])->eq('eventName');
         Assert::that($event['aggregate_id'])->eq(23);
         Assert::that($event['aggregate_version'])->eq(7);
+        Assert::that($event['channel'])->eq($this->channelWithNoFilterNoTranslator);
     }
 }
