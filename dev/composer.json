@@ -24,6 +24,7 @@
         "phpunit/phpunit": "^9.5",
         "behat/behat": "^3.10",
         "beberlei/assert": "^3.3",
-        "curl/curl": "^2.3"
+        "curl/curl": "^2.3",
+        "phpspec/prophecy": "^1.15"
     }
 }

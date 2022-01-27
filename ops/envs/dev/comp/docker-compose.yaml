@@ -13,6 +13,10 @@ services:
       MESSAGE_CONSUMER_GROUP: ${MESSAGE_CONSUMER_GROUP}
       EVENT_CHANNELS: ${EVENT_CHANNELS}
       INVALID_CHANNEL: ${INVALID_CHANNEL}
+      STORE_DB_HOST: db
+      STORE_DB_USER: ${STORE_DB_USER}
+      STORE_DB_PASSWORD: ${STORE_DB_PASSWORD}
+      STORE_DB_NAME: ${STORE_DB_NAME}
     expose: 
     - ${HTTP_PORT}
     ports: 
@@ -21,6 +25,7 @@ services:
     - ../../../../dev:/var/www
     depends_on:
       - kafka
+      - db
   zookeeper:
     image: quay.io/strimzi/kafka:0.27.0-kafka-3.0.0
     command: [
@@ -52,9 +57,9 @@ services:
   db:
     build: ../cont/db/
     environment:
-      POSTGRES_PASSWORD: "${DB_PASSWORD}"
-      POSTGRES_USER: "${DB_USER}"
-      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_PASSWORD: "${STORE_DB_PASSWORD}"
+      POSTGRES_USER: "${STORE_DB_USER}"
+      POSTGRES_DB: "${STORE_DB_NAME}"
       POSTGRES_HOST_AUTH_METHOD: trust
     expose:
       - 5432

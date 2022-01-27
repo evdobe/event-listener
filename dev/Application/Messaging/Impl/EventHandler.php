@@ -2,6 +2,7 @@
 
 namespace Application\Messaging\Impl;
 
+use Application\Event\Store;
 use Application\Messaging\Handler;
 use Application\Messaging\Message;
 use Application\Messaging\Filter;
@@ -9,7 +10,7 @@ use Application\Messaging\Translator;
 
 class EventHandler implements Handler
 {
-    public function __construct(protected ?Filter $filter = null, protected ?Translator $translator = null)
+    public function __construct(protected Store $store, protected ?Filter $filter = null, protected ?Translator $translator = null)
     {
         echo "Initializing handler with filter ".($filter?$filter::class:'<NONE>')." and translator ".($translator?$translator::class:'<NONE>')."\n";
     }
@@ -27,6 +28,7 @@ class EventHandler implements Handler
             .$message->getBody().", headers: "
             .print_r($message->getHeaders(), true).", properties: "
             .print_r($message->getProperties(), true)."\n";
+        $this->store->add(message: $message, channel: $channel);
     }
 
 }

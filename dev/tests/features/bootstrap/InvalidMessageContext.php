@@ -89,7 +89,12 @@ class InvalidMessageContext implements Context
     {
         $topic = self::$kafkaContext->createTopic(getenv('INVALID_CHANNEL'));
         $consumer = self::$kafkaContext->createConsumer($topic);
-        $message = $consumer->receive(10000);
+        $message = $consumer->receive(60000);
+        if ($message){
+            while($res = $consumer->receive(1000)){
+                $message = $res;
+            }
+        }
         $consumer->acknowledge($message);
 
         Assert::that($message)->notNull();

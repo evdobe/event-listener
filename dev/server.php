@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Application\Event\Store;
 use Application\Http\Server as HttpServer;
 use Application\Http\Request as HttpRequest;
 use Application\Http\Response as HttpResponse;
@@ -29,6 +30,7 @@ foreach ($messagingConfig['channels'] as $channel => $handlerConfig){
             'channel' => $channel, 
             'invalidChannel' => $messagingConfig['invalidChannel'],
             'handler' => $container->make(MessagingHandler::class, [
+                'store' => $container->get(Store::class),
                 'filter' => $handlerConfig['filter']?$container->make($handlerConfig['filter']['class'], ['arg' => $handlerConfig['filter']['arg']]):null, 
                 'translator' => $handlerConfig['translator']?$container->make($handlerConfig['translator']['class'], ['arg' => $handlerConfig['translator']['arg']]):null, 
             ])

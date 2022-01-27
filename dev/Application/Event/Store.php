@@ -2,7 +2,11 @@
 
 namespace Application\Event;
 
+use Application\Messaging\Message;
+
 interface Store
 {
-    public function add(Event $event):void;
+    public function __construct(Mapper $mapper);
+
+    public function add(Message $message, string $channel):void;
 }
