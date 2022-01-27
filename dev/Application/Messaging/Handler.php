@@ -5,5 +5,5 @@ namespace Application\Messaging;
 interface Handler
 {
     public function __construct(?Filter $filter = null, ?Translator $translator = null);
-    public function handle(Message $message): void;
+    public function handle(Message $message, string $channel): void;
 }

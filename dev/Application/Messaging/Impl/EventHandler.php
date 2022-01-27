@@ -14,7 +14,7 @@ class EventHandler implements Handler
         echo "Initializing handler with filter ".($filter?$filter::class:'<NONE>')." and translator ".($translator?$translator::class:'<NONE>')."\n";
     }
 
-    public function handle(Message $message): void
+    public function handle(Message $message, string $channel): void
     {
         if ($this->filter && !$this->filter->matches($message)){
             echo "Skipping unmatched message.\n";

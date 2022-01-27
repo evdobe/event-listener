@@ -43,7 +43,7 @@ class Consumer implements ApplicationConsumer
             try {
                 $message = $this->delegate->receive();
                 if ($message){
-                    $this->handler->handle(new Message($message));
+                    $this->handler->handle(message: new Message($message), channel: $this->channel);
                     $this->delegate->acknowledge($message);
                 }
             }
