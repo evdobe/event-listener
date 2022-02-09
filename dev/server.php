@@ -36,6 +36,7 @@ foreach ($messagingConfig['channels'] as $channel => $handlerConfig){
             ])
         ]);
         $messagingConsumer->start();
+        sleep(1);
     }]);
     $httpServer->addProcess($process);
 }
