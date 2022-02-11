@@ -69,7 +69,7 @@ class InvalidMessageContext implements Context
     {
         Assert::that(getenv('EVENT_CHANNELS'))->contains('InvalidFilter');
 
-        $this->channelWithInvalidFilter = explode(':',trim(array_values(array_filter(explode("\n", getenv('EVENT_CHANNELS')), function($row){
+        $this->channelWithInvalidFilter = explode(';',trim(array_values(array_filter(explode("\n", getenv('EVENT_CHANNELS')), function($row){
             return str_contains($row, 'InvalidFilter');
         }))[0]))[0];
         

@@ -20,7 +20,7 @@ $channelsConfig = array_filter(array_map(function(string $row){
 $channelsConfig = array_reduce($channelsConfig, function(array $carry, string $item){
     $parts = array_map(function(string $row){
         return trim($row);
-    },explode(":", $item));
+    },explode(";", $item));
 
     $classConfig = function(string $configStr){
         $parts = explode("|", $configStr);

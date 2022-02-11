@@ -72,7 +72,7 @@ class ValidMessageContext implements Context
     public function theChannelIsSet()
     {
         $this->channelWithNoFilterNoTranslator = trim(array_values(array_filter(explode("\n", getenv('EVENT_CHANNELS')), function($row){
-            return !empty($row) && !str_contains($row, ':');
+            return !empty($row) && !str_contains($row, ';');
         }))[0]);
         echo $this->channelWithNoFilterNoTranslator;
     }

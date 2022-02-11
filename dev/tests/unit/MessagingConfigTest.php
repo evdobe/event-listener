@@ -5,8 +5,8 @@ final class MessagingConfigTest extends TestCase
 {
     public function testReturnedChannelsArrayShouldContainChannelNamesAsKeys(){
         putenv('EVENT_CHANNELS=
-            channel1:\Application\Messaging\Impl\ExampleFilter1:\Application\Messaging\Impl\ExampleTranslator1
-            channel2:\Application\Messaging\Impl\ExampleFilter2:\Application\Messaging\Impl\ExampleTranslator2
+            channel1;\Application\Messaging\Impl\ExampleFilter1;\Application\Messaging\Impl\ExampleTranslator1
+            channel2;\Application\Messaging\Impl\ExampleFilter2;\Application\Messaging\Impl\ExampleTranslator2
         ');
 
         $config=include('config/messaging.php');
@@ -17,9 +17,9 @@ final class MessagingConfigTest extends TestCase
 
     public function testReturnedChannelsArrayShouldContainSecondPartAsFilterIfExists(){
         putenv('EVENT_CHANNELS=
-            channel1:\Application\Messaging\Impl\ExampleFilter1:\Application\Messaging\Impl\ExampleTranslator1
+            channel1;\Application\Messaging\Impl\ExampleFilter1;\Application\Messaging\Impl\ExampleTranslator1
             channel2
-            channel3::\Application\Messaging\Impl\ExampleTranslator2
+            channel3;;\Application\Messaging\Impl\ExampleTranslator2
         ');
 
         $config=include('config/messaging.php');
@@ -31,9 +31,9 @@ final class MessagingConfigTest extends TestCase
 
     public function testReturnedChannelsArrayShouldContainThirdPartAsTranslatorIfExists(){
         putenv('EVENT_CHANNELS=
-            channel1:\Application\Messaging\Impl\ExampleFilter1:\Application\Messaging\Impl\ExampleTranslator1
+            channel1;\Application\Messaging\Impl\ExampleFilter1;\Application\Messaging\Impl\ExampleTranslator1
             channel2
-            channel3::\Application\Messaging\Impl\ExampleTranslator2
+            channel3;;\Application\Messaging\Impl\ExampleTranslator2
         ');
 
         $config=include('config/messaging.php');
