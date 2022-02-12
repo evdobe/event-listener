@@ -89,8 +89,8 @@ class ValidMessageContext implements Context
             'timestamp' => '2022-01-28 12:23:56'
         ],[
             'name' => 'eventName',
-            'aggregateId' => 23,
-            'aggregateVersion' => 7
+            'aggregate_id' => 23,
+            'aggregate_version' => 7
         ]));
     }
 

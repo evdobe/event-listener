@@ -12,8 +12,8 @@ class MapperTest extends TestCase
     protected function enqueueRdkafkaMessage(){
         return (new Message(delegate: new RdKafkaMessage()))
             ->withHeader(name: 'name', value: 'eventName')
-            ->withHeader(name: 'aggregateId', value: 12)
-            ->withHeader(name: 'aggregateVersion', value: 13)
+            ->withHeader(name: 'aggregate_id', value: 12)
+            ->withHeader(name: 'aggregate_version', value: 13)
             ->withProperty(name: 'timestamp', value: '2022-01-27 12:03:23 Z')
             ->withProperty(name: 'id', value: 27)
             ->withBody(body: 'a test body')

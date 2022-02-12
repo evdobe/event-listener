@@ -13,8 +13,8 @@ class Mapper implements EventMapper
             ':name' => $message->getHeader('name'),
             ':channel' => $channel,
             ':correlation_id' => $message->getPropery('id'),
-            ':aggregate_id' => $message->getHeader('aggregateId'),
-            ':aggregate_version' => $message->getHeader('aggregateVersion'),
+            ':aggregate_id' => $message->getHeader('aggregate_id'),
+            ':aggregate_version' => $message->getHeader('aggregate_version'),
             ':data' => $message->getBody(),
             ':timestamp' => $message->getPropery('timestamp')
         ];
