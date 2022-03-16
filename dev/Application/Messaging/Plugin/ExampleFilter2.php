@@ -16,6 +16,6 @@ class ExampleFilter2 implements Filter
     {
         return 
             $message->getHeader('name') == 'MySecondEventName'
-            && $message->getPropery('type') == 'MySecondEventType';
+            && $message->getProperty('type') == 'MySecondEventType';
     }
 }

@@ -12,11 +12,11 @@ class Mapper implements EventMapper
         return [
             ':name' => $message->getHeader('name'),
             ':channel' => $channel,
-            ':correlation_id' => $message->getPropery('id'),
+            ':correlation_id' => $message->getProperty('correlation_id')?$message->getProperty('correlation_id'):$message->getProperty('id'),
             ':aggregate_id' => $message->getHeader('aggregate_id'),
             ':aggregate_version' => $message->getHeader('aggregate_version'),
             ':data' => $message->getBody(),
-            ':timestamp' => $message->getPropery('timestamp')
+            ':timestamp' => $message->getProperty('timestamp')
         ];
     }
 
