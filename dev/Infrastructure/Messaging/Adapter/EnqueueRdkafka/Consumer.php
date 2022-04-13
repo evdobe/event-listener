@@ -50,7 +50,11 @@ class Consumer implements ApplicationConsumer
             catch (\Exception $e){
                 echo "RECEIVE ERROR!!! Channel: "
                     .$this->delegate->getQueue()->getTopicName()
-                    ." Error: ".$e->getMessage()."\n";
+                    ." Error: ".$e::class.", code: ".$e->getCode().", message: ".$e->getMessage()."\n";
+                if ($e::class == \PDOException::class){
+                    echo "DB ERROR!!! Will NOT REJECT the message. I will re-throw and try again to consume it.";
+                    throw $e;
+                }
                 if (!empty($message)){
                     echo "REJECTING MESSAGE: ".print_r($message, true)."\n";
                     $this->delegate->reject($message);
