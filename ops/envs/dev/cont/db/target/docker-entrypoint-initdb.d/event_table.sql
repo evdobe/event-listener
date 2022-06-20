@@ -29,7 +29,7 @@ CREATE TABLE public.event (
     id integer NOT NULL,
     "name" text NOT NULL,
     channel text NOT NULL,
-    correlation_id integer NOT NULL,
+    correlation_id text NOT NULL,
     aggregate_id integer NOT NULL,
     aggregate_version integer NOT NULL,
     data jsonb NOT NULL,
