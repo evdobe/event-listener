@@ -24,11 +24,9 @@ class EventHandler implements Handler
         if ($this->translator){
             $message = $this->translator->translate($message);
         }
-        echo "Handling message with body: "
-            .$message->getBody().", headers: "
-            .print_r($message->getHeaders(), true).", properties: "
-            .print_r($message->getProperties(), true)."\n";
+        echo "Handling message with id: ".$message->getProperties()['id']." from channel: ".$channel."...\n";
         $this->store->add(message: $message, channel: $channel);
+        echo "Successfully added message to store.\n";
     }
 
 }
