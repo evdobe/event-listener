@@ -27,4 +27,11 @@ class Store implements EventStore
         $statement = $this->con->prepare(self::UPDATE_EVENT_SQL);
         $statement->execute($data);
     }
+
+    public function hasEvent(int $sourceId): bool
+    {
+        $statement = $this->con->prepare('SELECT id FROM event WHERE source_id = :source_id');
+        $statement->execute([':source_id' => $sourceId]);
+        return !empty($statement->fetch());
+    }
 }

@@ -6,13 +6,14 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Tester\Exception\PendingException;
 use Assert\Assertion;
 use Assert\Assert;
-
+use Behat\Behat\Hook\Call\BeforeScenario;
 use Enqueue\RdKafka\RdKafkaContext;
 use Enqueue\RdKafka\RdKafkaTopic;
 use Enqueue\RdKafka\RdKafkaConsumer;
 use Enqueue\RdKafka\RdKafkaProducer;
 
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
  * Defines application features from the specific context.
@@ -57,9 +58,9 @@ class ValidMessageContext implements Context
     }
 
     /**
-     * @BeforeSuite
+     * @BeforeScenario
      */
-    public static function truncateEventTable(BeforeSuiteScope $scope)
+    public static function truncateEventTable(BeforeScenarioScope $scope)
     {
         $con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
         $stmt = $con->prepare('TRUNCATE TABLE "event"');
@@ -95,6 +96,14 @@ class ValidMessageContext implements Context
     }
 
     /**
+     * @When listener encounters the same valid message
+     */
+    public function listenerEncountersTheSameValidMessage()
+    {
+        $this->listenerEncountersAnValidMessage();
+    }
+
+    /**
      * @Then it should insert it in db
      */
     public function itShouldInsertItInDb()
@@ -117,6 +126,19 @@ class ValidMessageContext implements Context
         Assert::that($event['aggregate_id'])->eq(23);
         Assert::that($event['aggregate_version'])->eq(7);
         Assert::that($event['channel'])->eq($this->channelWithNoFilterNoTranslator);
+    }
+
+    /**
+     * @Then it should insert it in db only once
+     */
+    public function itShouldInsertItInDbOnlyOnce()
+    {
+        $this->itShouldInsertItInDb();
+        $con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
+        $stmt = $con->prepare('SELECT count(*) FROM event');
+        $stmt->execute(); 
+        $count = $stmt->fetch()['count'];
+        Assert::that($count)->eq(1);
     }
 
     /**

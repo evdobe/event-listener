@@ -20,3 +20,10 @@ Scenario: Insert a valid message from an unfilterred and untranslated channel wi
     Given The channel is set
     When listener encounters an valid message with user id
     Then it should insert it in db with user id
+
+@duplicate
+Scenario: Insert a duplicate valid message from an unfilterred and untranslated channel
+    Given The channel is set
+    When listener encounters an valid message 
+    And listener encounters the same valid message
+    Then it should insert it in db only once

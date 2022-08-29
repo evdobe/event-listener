@@ -17,8 +17,15 @@ class EventHandler implements Handler
 
     public function handle(Message $message, string $channel): void
     {
+        if (empty($message->getProperties()['id'])){
+            throw new \Exception('Invalid message with empty id property!');
+        }
+        if ($this->store->hasEvent(sourceId: $message->getProperties()['id'])){
+            echo "Skipping duplicate message with id: ".$message->getProperties()['id']." from channel: ".$channel."...\n";
+            return;
+        }
         if ($this->filter && !$this->filter->matches($message)){
-            echo "Skipping unmatched message.\n";
+            echo "Skipping unmatched message with id: ".$message->getProperties()['id']." from channel: ".$channel."...\n";
             return;
         }
         if ($this->translator){

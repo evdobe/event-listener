@@ -13,6 +13,7 @@ use Enqueue\RdKafka\RdKafkaConsumer;
 use Enqueue\RdKafka\RdKafkaProducer;
 
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
  * Defines application features from the specific context.
@@ -52,6 +53,16 @@ class InvalidMessageContext implements Context
                 ],
             ]
         ))->createContext();
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public static function truncateEventTable(BeforeScenarioScope $scope)
+    {
+        $con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
+        $stmt = $con->prepare('TRUNCATE TABLE "event"');
+        $stmt->execute(); 
     }
 
     /**

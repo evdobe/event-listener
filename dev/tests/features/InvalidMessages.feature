@@ -1,3 +1,4 @@
+@invalid
 Feature: InvalidMessage
     In order to keep a record of invalid messages
     As an administrator
