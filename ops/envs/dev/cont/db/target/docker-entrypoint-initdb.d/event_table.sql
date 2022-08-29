@@ -27,6 +27,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public.event (
     id integer NOT NULL,
+    source_id integer DEFAULT NULL,
     "name" text NOT NULL,
     channel text NOT NULL,
     user_id text DEFAULT NULL,
