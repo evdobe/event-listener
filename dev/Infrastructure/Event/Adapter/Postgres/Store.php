@@ -13,8 +13,8 @@ class Store implements EventStore
     protected PDO $con;
 
     protected const UPDATE_EVENT_SQL = 'INSERT INTO 
-        event("name", channel, correlation_id, aggregate_id, aggregate_version, "data", "timestamp", "received_at") 
-        VALUES (:name, :channel, :correlation_id, :aggregate_id, :aggregate_version, :data, :timestamp, NOW())';
+        event("name", channel, correlation_id, user_id, aggregate_id, aggregate_version, "data", "timestamp", "received_at") 
+        VALUES (:name, :channel, :correlation_id, :user_id, :aggregate_id, :aggregate_version, :data, :timestamp, NOW())';
 
     public function __construct(protected Mapper $mapper)
     {

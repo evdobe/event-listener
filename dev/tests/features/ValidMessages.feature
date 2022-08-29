@@ -14,3 +14,9 @@ Scenario: Insert a valid message from an unfilterred and untranslated channel wi
     Given The channel is set
     When listener encounters an valid message with correlation id
     Then it should insert it in db with correlation id
+
+@user_id
+Scenario: Insert a valid message from an unfilterred and untranslated channel with user id
+    Given The channel is set
+    When listener encounters an valid message with user id
+    Then it should insert it in db with user id

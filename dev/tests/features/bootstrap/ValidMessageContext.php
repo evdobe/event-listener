@@ -137,6 +137,25 @@ class ValidMessageContext implements Context
     }
 
     /**
+     * @When listener encounters an valid message with user id
+     */
+    public function listenerEncountersAnValidMessageWithUserId()
+    {
+        $topic = self::$kafkaContext->createTopic($this->channelWithNoFilterNoTranslator);
+        $producer = self::$kafkaContext->createProducer();
+        $producer->send($topic, self::$kafkaContext->createMessage('{"attr1": "val1", "attr2": "val2"}',[
+            'id' => 123,
+            'correlation_id' => 456,
+            'user_id' => 'testid',
+            'timestamp' => '2022-01-28 12:23:56'
+        ],[
+            'name' => 'eventName',
+            'aggregate_id' => 23,
+            'aggregate_version' => 7
+        ]));
+    }
+
+    /**
      * @Then it should insert it in db with correlation id
      */
     public function itShouldInsertItInDbWithCorrelationId()
@@ -153,6 +172,30 @@ class ValidMessageContext implements Context
         }
         Assert::that($event)->notEmpty();
         Assert::that($event['correlation_id'])->eq(456);
+        Assert::that($event['timestamp'])->eq('2022-01-28 12:23:56');
+        Assert::that($event['name'])->eq('eventName');
+        Assert::that($event['aggregate_id'])->eq(23);
+        Assert::that($event['aggregate_version'])->eq(7);
+        Assert::that($event['channel'])->eq($this->channelWithNoFilterNoTranslator);
+    }
+
+    /**
+     * @Then it should insert it in db with user id
+     */
+    public function itShouldInsertItInDbWithUserId()
+    {
+        $event = null;
+        $count = 0;
+        while (!$event && $count<60){
+            $con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
+            $stmt = $con->prepare('SELECT * FROM event WHERE "user_id" = :user_id');
+            $stmt->execute([':user_id' => 'testid']); 
+            $event = $stmt->fetch();
+            sleep(1);
+            $count++;
+        }
+        Assert::that($event)->notEmpty();
+        Assert::that($event['user_id'])->eq('testid');
         Assert::that($event['timestamp'])->eq('2022-01-28 12:23:56');
         Assert::that($event['name'])->eq('eventName');
         Assert::that($event['aggregate_id'])->eq(23);
