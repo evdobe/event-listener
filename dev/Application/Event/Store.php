@@ -9,4 +9,6 @@ interface Store
     public function __construct(Mapper $mapper);
 
     public function add(Message $message, string $channel):void;
+
+    public function hasEvent(int $sourceId, string $channel):bool;
 }

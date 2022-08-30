@@ -13,8 +13,8 @@ class Store implements EventStore
     protected PDO $con;
 
     protected const UPDATE_EVENT_SQL = 'INSERT INTO 
-        event("name", channel, correlation_id, aggregate_id, aggregate_version, "data", "timestamp", "received_at") 
-        VALUES (:name, :channel, :correlation_id, :aggregate_id, :aggregate_version, :data, :timestamp, NOW())';
+        event(source_id, "name", channel, correlation_id, user_id, aggregate_id, aggregate_version, "data", "timestamp", "received_at") 
+        VALUES (:source_id, :name, :channel, :correlation_id, :user_id, :aggregate_id, :aggregate_version, :data, :timestamp, NOW())';
 
     public function __construct(protected Mapper $mapper)
     {
@@ -26,5 +26,15 @@ class Store implements EventStore
         $data = $this->mapper->map(message: $message, channel: $channel);
         $statement = $this->con->prepare(self::UPDATE_EVENT_SQL);
         $statement->execute($data);
+    }
+
+    public function hasEvent(int $sourceId, string $channel): bool
+    {
+        $statement = $this->con->prepare('SELECT id FROM event WHERE source_id = :source_id AND channel = :channel');
+        $statement->execute([
+            ':source_id' => $sourceId,
+            ':channel' => $channel
+        ]);
+        return !empty($statement->fetch());
     }
 }
