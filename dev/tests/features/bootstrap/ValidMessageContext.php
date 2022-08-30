@@ -104,16 +104,36 @@ class ValidMessageContext implements Context
     }
 
     /**
+     * @When listener encounters a valid message with same id from different channel
+     */
+    public function listenerEncountersAValidMessageWithSameIdFromDifferentChannel()
+    {
+        $topic = self::$kafkaContext->createTopic('forth-channel');
+        $producer = self::$kafkaContext->createProducer();
+        $producer->send($topic, self::$kafkaContext->createMessage('{"attr1": "val1", "attr2": "val2"}',[
+            'id' => 123,
+            'timestamp' => '2022-01-28 12:23:56'
+        ],[
+            'name' => 'eventName',
+            'aggregate_id' => 23,
+            'aggregate_version' => 7
+        ]));
+    }
+
+    /**
      * @Then it should insert it in db
      */
-    public function itShouldInsertItInDb()
+    public function itShouldInsertItInDb(string $channel = null)
     {
+        if (!$channel){
+            $channel = $this->channelWithNoFilterNoTranslator;
+        }
         $event = null;
         $count = 0;
         while (!$event && $count<60){
             $con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
-            $stmt = $con->prepare('SELECT * FROM event WHERE "correlation_id" = :eventId');
-            $stmt->execute([':eventId' => 123]); 
+            $stmt = $con->prepare('SELECT * FROM event WHERE "correlation_id" = :eventId and channel = :channel');
+            $stmt->execute([':eventId' => 123, ':channel' => $channel]); 
             $event = $stmt->fetch();
             sleep(1);
             $count++;
@@ -125,7 +145,7 @@ class ValidMessageContext implements Context
         Assert::that($event['name'])->eq('eventName');
         Assert::that($event['aggregate_id'])->eq(23);
         Assert::that($event['aggregate_version'])->eq(7);
-        Assert::that($event['channel'])->eq($this->channelWithNoFilterNoTranslator);
+        Assert::that($event['channel'])->eq($channel);
     }
 
     /**
@@ -139,6 +159,15 @@ class ValidMessageContext implements Context
         $stmt->execute(); 
         $count = $stmt->fetch()['count'];
         Assert::that($count)->eq(1);
+    }
+
+    /**
+     * @Then it should insert both in db
+     */
+    public function itShouldInsertBothInDb()
+    {
+        $this->itShouldInsertItInDb();
+        $this->itShouldInsertItInDb('forth-channel');
     }
 
     /**

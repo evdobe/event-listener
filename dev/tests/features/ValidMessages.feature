@@ -22,8 +22,15 @@ Scenario: Insert a valid message from an unfilterred and untranslated channel wi
     Then it should insert it in db with user id
 
 @duplicate
-Scenario: Insert a duplicate valid message from an unfilterred and untranslated channel
+Scenario: Skip a duplicate valid message from an unfilterred and untranslated channel
     Given The channel is set
     When listener encounters an valid message 
     And listener encounters the same valid message
     Then it should insert it in db only once
+
+@same-id
+Scenario: Insert a second valid message with same id from an other unfilterred and untranslated channel
+    Given The channel is set
+    When listener encounters an valid message
+    And listener encounters a valid message with same id from different channel
+    Then it should insert both in db
