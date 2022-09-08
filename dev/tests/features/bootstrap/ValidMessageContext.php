@@ -140,7 +140,7 @@ class ValidMessageContext implements Context
         }
         Assert::that($event)->notEmpty();
         Assert::that($event['source_id'])->eq(123);
-        Assert::that($event['correlation_id'])->eq(123);
+        Assert::that($event['correlation_id'])->eq(null);
         Assert::that($event['timestamp'])->eq('2022-01-28 12:23:56');
         Assert::that($event['name'])->eq('eventName');
         Assert::that($event['aggregate_id'])->eq(23);

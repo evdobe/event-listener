@@ -14,7 +14,7 @@ class Mapper implements EventMapper
             ':source_id' => $message->getProperty('id'),
             ':channel' => $channel,
             ':user_id' => $message->getProperty('user_id')?:null,
-            ':correlation_id' => $message->getProperty('correlation_id')?$message->getProperty('correlation_id'):$message->getProperty('id'),
+            ':correlation_id' => $message->getProperty('correlation_id')?:null,
             ':aggregate_id' => $message->getHeader('aggregate_id'),
             ':aggregate_version' => $message->getHeader('aggregate_version'),
             ':data' => $message->getBody(),
