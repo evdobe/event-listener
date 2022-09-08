@@ -18,7 +18,7 @@ class Store implements EventStore
 
     public function __construct(protected Mapper $mapper)
     {
-        $this->con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
+        $this->con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";port=" . (getenv('DB_PORT') ?: '5432').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
     }
 
     public function add(Message $message, string $channel): void
@@ -28,7 +28,7 @@ class Store implements EventStore
         $statement->execute($data);
     }
 
-    public function hasEvent(int $sourceId, string $channel): bool
+    public function hasEvent(int|string $sourceId, string $channel): bool
     {
         $statement = $this->con->prepare('SELECT id FROM event WHERE source_id = :source_id AND channel = :channel');
         $statement->execute([
