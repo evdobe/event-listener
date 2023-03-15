@@ -20,7 +20,7 @@ class EventHandler implements Handler
         if (empty($message->getProperties()['id'])){
             throw new \Exception('Invalid message with empty id property!');
         }
-        if ($this->store->hasEvent(sourceId: $message->getProperties()['id'], channel: $channel)){
+        if ($this->store->hasEvent(sourceId: $message->getProperties()['id'], channel: $channel, timestamp: $message->getProperties()['timestamp'])){
             echo "Skipping duplicate message with id: ".$message->getProperties()['id']." from channel: ".$channel."...\n";
             return;
         }

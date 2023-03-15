@@ -10,5 +10,5 @@ interface Store
 
     public function add(Message $message, string $channel):void;
 
-    public function hasEvent(int $sourceId, string $channel):bool;
+    public function hasEvent(int $sourceId, string $channel, string $timestamp):bool;
 }

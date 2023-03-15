@@ -132,7 +132,7 @@ class ValidMessageContext implements Context
         $count = 0;
         while (!$event && $count<60){
             $con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
-            $stmt = $con->prepare('SELECT * FROM event WHERE "correlation_id" = :eventId and channel = :channel');
+            $stmt = $con->prepare('SELECT * FROM event WHERE "source_id" = :eventId and channel = :channel');
             $stmt->execute([':eventId' => 123, ':channel' => $channel]); 
             $event = $stmt->fetch();
             sleep(1);

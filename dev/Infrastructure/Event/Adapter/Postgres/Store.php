@@ -28,12 +28,13 @@ class Store implements EventStore
         $statement->execute($data);
     }
 
-    public function hasEvent(int|string $sourceId, string $channel): bool
+    public function hasEvent(int|string $sourceId, string $channel, string $timestamp): bool
     {
-        $statement = $this->con->prepare('SELECT id FROM event WHERE source_id = :source_id AND channel = :channel');
+        $statement = $this->con->prepare('SELECT id FROM event WHERE source_id = :source_id AND channel = :channel AND timestamp = :timestamp');
         $statement->execute([
             ':source_id' => $sourceId,
-            ':channel' => $channel
+            ':channel' => $channel,
+            ':timestamp' => $timestamp,
         ]);
         return !empty($statement->fetch());
     }

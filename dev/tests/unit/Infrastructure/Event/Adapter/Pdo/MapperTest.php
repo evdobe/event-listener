@@ -16,6 +16,8 @@ class MapperTest extends TestCase
             ->withHeader(name: 'aggregate_version', value: 13)
             ->withProperty(name: 'timestamp', value: '2022-01-27 12:03:23 Z')
             ->withProperty(name: 'id', value: 27)
+            ->withProperty(name: 'correlation_id', value: 'asd34fdf')
+            ->withProperty(name: 'user_id', value: 'u00034')
             ->withBody(body: 'a test body')
         ;
     }
@@ -24,11 +26,13 @@ class MapperTest extends TestCase
         return [
             ':name' => 'eventName',
             ':channel' => 'eventChannel',
-            ':correlation_id' => 27,
+            ':correlation_id' => 'asd34fdf',
             ':aggregate_id' => 12,
             ':aggregate_version' => 13,
             ':data' => 'a test body',
-            ':timestamp' => '2022-01-27 12:03:23 Z'
+            ':timestamp' => '2022-01-27 12:03:23 Z',
+            ':source_id' => 27,
+            ':user_id' => 'u00034'
         ];
     }
 
