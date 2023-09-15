@@ -11,6 +11,13 @@ $connectionConfig = [
     ],
 ];
 
+if (getenv('MESSAGE_BROKER_SECURITY_PROTOCOL') === 'SASL_SSL'){
+    $connectionConfig['global']['security.protocol'] = 'SASL_SSL';
+    $connectionConfig['global']['sasl.mechanisms'] = getenv('MESSAGE_BROKER_SASL_MECHANISMS')?:'PLAIN';
+    $connectionConfig['global']['sasl.username'] = getenv('MESSAGE_BROKER_SASL_USERNAME')?:'$ConnectionString';
+    $connectionConfig['global']['sasl.password'] = getenv('MESSAGE_BROKER_SASL_PASSWORD');
+}
+
 $channels = getenv('EVENT_CHANNELS');
 
 $channelsConfig = array_filter(array_map(function(string $row){
