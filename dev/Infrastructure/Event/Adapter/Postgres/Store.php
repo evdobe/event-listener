@@ -18,7 +18,11 @@ class Store implements EventStore
 
     public function __construct(protected Mapper $mapper)
     {
-        $this->con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";port=" . (getenv('DB_PORT') ?: '5432').";dbname=".getenv('STORE_DB_NAME'), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
+        if (getenv('LOG_LEVEL') === 'debug'){
+            echo "PDO params:";
+            var_dump("pgsql:host=".getenv('STORE_DB_HOST').";port=" . (getenv('DB_PORT') ?: '5432').";dbname=".getenv('STORE_DB_NAME').(getenv('STORE_DB_SSL_MODE')?";sslmode=".getenv('STORE_DB_SSL_MODE'):""), getenv('STORE_DB_USER'));
+        }
+        $this->con = new PDO("pgsql:host=".getenv('STORE_DB_HOST').";port=" . (getenv('DB_PORT') ?: '5432').";dbname=".getenv('STORE_DB_NAME').(getenv('STORE_DB_SSL_MODE')?";sslmode=".getenv('STORE_DB_SSL_MODE'):""), getenv('STORE_DB_USER'), getenv('STORE_DB_PASSWORD'));
     }
 
     public function add(Message $message, string $channel): void

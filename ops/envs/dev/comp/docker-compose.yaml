@@ -21,6 +21,8 @@ services:
       STORE_DB_USER: ${STORE_DB_USER}
       STORE_DB_PASSWORD: ${STORE_DB_PASSWORD}
       STORE_DB_NAME: ${STORE_DB_NAME}
+      DB_PORT: ${STORE_DB_PORT}
+      STORE_DB_SSL_MODE: ${STORE_DB_SSL_MODE}
     expose: 
     - ${HTTP_PORT}
     ports: 
